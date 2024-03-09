@@ -1,0 +1,17 @@
+const int ledPin = 2; // LED connected to digital pin 13
+
+void setup() {
+  Serial.begin(9600); // Start the serial communication with the baud rate 9600
+  pinMode(ledPin, OUTPUT); // Set the ledPin as an output
+}
+
+void loop() {
+  if (Serial.available() > 0) { // Check if there is a received character
+    char command = Serial.read(); // Read the received character
+    if (command == '1') { // If the command is '1', turn on the LED
+      digitalWrite(ledPin, HIGH);
+    } else if (command == '0') { // If the command is '0', turn off the LED
+      digitalWrite(ledPin, LOW);
+    }
+  }
+}
