@@ -1,0 +1,27 @@
+int pin2State = LOW;
+int pin3State = LOW;
+void setup() {
+  pinMode(2, OUTPUT);
+  pinMode(3, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+ if (Serial.available()>0){
+   char receivedChar = Serial.read();
+
+   if (receivedChar == '2') {
+     pin2State = !pin2State;
+     digitalWrite(2, pin2State);
+    } else if (receivedChar == '3'){
+       pin3State = !pin3State;
+       digitalWrite(3, pin3State);
+      }
+      else if (receivedChar == '0'){
+         pin2State = LOW;
+         pin3State = LOW;
+         digitalWrite(2, pin2State);
+         digitalWrite(3, pin3State);
+         }
+  }
+}
