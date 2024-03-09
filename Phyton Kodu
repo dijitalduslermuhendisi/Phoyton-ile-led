@@ -1,0 +1,14 @@
+import serial
+import time
+
+# Replace 'COM6' with the appropriate serial port for your Arduino
+ser = serial.Serial('COM6', 9600)
+
+while True:
+    # Send '1' to turn the LED on
+    ser.write(b'1')
+    time.sleep(3)  # Wait for 3 seconds
+
+    # Send '0' to turn the LED off
+    ser.write(b'0')
+    time.sleep(3)  # Wait for 3 seconds
