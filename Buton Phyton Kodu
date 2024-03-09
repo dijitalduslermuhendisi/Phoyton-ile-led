@@ -1,0 +1,32 @@
+import serial
+import time
+import tkinter as tk
+
+# Arduino'ya bağlan
+ser = serial.Serial('COM6', 9600)
+
+def led_yak():
+    ser.write(b'1')  # Arduino'ya "1" gönder
+    print("LED yakıldı")
+
+def led_sondur():
+    ser.write(b'0')  # Arduino'ya "0" gönder
+    print("LED söndürüldü")
+
+# Pencere oluştur
+pencere = tk.Tk()
+pencere.title("LED Kontrol Ekranı")
+
+# LED'i yak butonu
+buton_yak = tk.Button(pencere, text="LED'i Yak", command=led_yak)
+buton_yak.pack()
+
+# LED'i söndür butonu
+buton_sondur = tk.Button(pencere, text="LED'i Söndür", command=led_sondur)
+buton_sondur.pack()
+
+# Pencereyi göster
+pencere.mainloop()
+
+# Arduino bağlantısını kapat
+ser.close()
