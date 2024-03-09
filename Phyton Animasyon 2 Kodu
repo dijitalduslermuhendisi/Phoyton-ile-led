@@ -1,0 +1,68 @@
+import serial
+from tkinter import Tk, Button, Canvas
+
+arduino_port = "COM6"  # Arduino'nun bağlı olduğu portu belirtin
+baud_rate = 9600  # Arduino ile iletişim hızı
+
+# Arduino'ya bağlanan seri portu oluşturun
+arduino = serial.Serial(arduino_port, baud_rate, timeout=1)
+
+def toggle_led_2():
+    if led_button_2["text"] == "2. Pini Aç":
+        arduino.write(b'2')
+        led_button_2["text"] = "2. Pini Kapat"
+        animate_led_2(True)
+    else:
+        arduino.write(b'0')
+        led_button_2["text"] = "2. Pini Aç"
+        animate_led_2(False)
+
+def toggle_led_3():
+    if led_button_3["text"] == "3. Pini Aç":
+        arduino.write(b'3')
+        led_button_3["text"] = "3. Pini Kapat"
+        animate_led_3(True)
+    else:
+        arduino.write(b'0')
+        led_button_3["text"] = "3. Pini Aç"
+        animate_led_3(False)
+
+def animate_led_2(state):
+    if state:
+        led_canvas_2.itemconfig(led_item_2, fill="red")  # 2. pin için kırmızı renk
+    else:
+        led_canvas_2.itemconfig(led_item_2, fill="gray")
+
+def animate_led_3(state):
+    if state:
+        led_canvas_3.itemconfig(led_item_3, fill="yellow")  # 3. pin için sarı renk
+    else:
+        led_canvas_3.itemconfig(led_item_3, fill="gray")
+
+# Tkinter penceresini oluşturun
+root = Tk()
+root.title("Arduino Pin Kontrol")
+
+# 2. pin için LED kontrol düğmesi
+led_button_2 = Button(root, text="2. Pini Aç", command=toggle_led_2)
+led_button_2.pack(pady=10)
+
+# 3. pin için LED kontrol düğmesi
+led_button_3 = Button(root, text="3. Pini Aç", command=toggle_led_3)
+led_button_3.pack(pady=10)
+
+# 2. pin durumunu göstermek için bir canvas
+led_canvas_2 = Canvas(root, width=50, height=50)
+led_item_2 = led_canvas_2.create_oval(5, 5, 45, 45, fill="gray")
+led_canvas_2.pack()
+
+# 3. pin durumunu göstermek için bir canvas
+led_canvas_3 = Canvas(root, width=50, height=50)
+led_item_3 = led_canvas_3.create_oval(5, 5, 45, 45, fill="gray")
+led_canvas_3.pack()
+
+# Pencereyi gösterin
+root.mainloop()
+
+# Program sonlandığında Arduino bağlantısını kapatın
+arduino.close()
