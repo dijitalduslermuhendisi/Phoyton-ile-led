@@ -1,0 +1,51 @@
+import serial
+import time
+from tkinter import Tk, Button, Canvas
+
+arduino_port = "COM6"  # Arduino'nun bağlı olduğu portu belirtin
+baud_rate = 9600  # Arduino ile iletişim hızı
+
+# Arduino'ya bağlanan seri portu oluşturun
+arduino = serial.Serial(arduino_port, baud_rate, timeout=1)
+
+def toggle_led():
+    if led_button["text"] == "LEDi Yak":
+        arduino.write(b'1')
+        led_button["text"] = "LEDi Söndür"
+        animate_led(True)
+    else:
+        arduino.write(b'0')
+        led_button["text"] = "LEDi Yak"
+        animate_led(False)
+
+def animate_led(state):
+    if state:
+        led_canvas.itemconfig(led_item, fill="red")
+    else:
+        led_canvas.itemconfig(led_item, fill="gray")
+    
+# Tkinter penceresini oluşturun
+root = Tk()
+root.title("Arduino LED Kontrol")
+
+# LED'i kontrol etmek için bir düğme ekleyin
+led_button = Button(root, text="LEDi Yak", command=toggle_led)
+led_button.pack(pady=20)
+
+# LED durumunu göstermek için bir canvas ekleyin
+led_canvas = Canvas(root, width=50, height=50)
+led_item = led_canvas.create_oval(5, 5, 45, 45, fill="gray")  # Başlangıç rengi gri
+led_canvas.pack()
+
+# Pencereyi gösterin
+root.mainloop()
+
+# Program sonlandığında Arduino bağlantısını kapatın
+arduino.close()
+
+
+
+
+
+
+
